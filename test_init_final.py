@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*- 
 
-################ Server Ver. 22 (2020. 9. 29.) #####################
+################ Server Ver. 23 (2020. 11. 2.) #####################
 
 import sys, os
 import asyncio, discord, aiohttp
@@ -1291,7 +1291,7 @@ class mainCog(commands.Cog):
 	async def setting_(self, ctx):	
 		#print (ctx.message.channel.id)
 		if ctx.message.channel.id == basicSetting[7]:
-			setting_val = '보탐봇버전 : Server Ver. 22 (2020. 9. 29.)\n'
+			setting_val = '보탐봇버전 : Server Ver. 23 (2020. 11. 2.)\n'
 			if basicSetting[6] != "" :
 				setting_val += '음성채널 : ' + self.bot.get_channel(basicSetting[6]).name + '\n'
 			setting_val += '텍스트채널 : ' + self.bot.get_channel(basicSetting[7]).name +'\n'
@@ -1320,7 +1320,7 @@ class mainCog(commands.Cog):
 					)
 			embed.add_field(
 					name="----- Special Thanks to. -----",
-					value= '```총무, 옹님, 공부중, 꽃신, 별빛, 크마, D.H.Kim, K.H.Sim, 쿠쿠, 오브로드, D.H.Oh, Bit, 팥빵, 천려, 이파리, 도미, 일깡```'
+					value= '```총무, 옹님, 공부중, 꽃신, 별빛, 크마, D.H.Kim, K.H.Sim, 쿠쿠, 오브로드, D.H.Oh, Bit, 팥빵, 천려, 이파리, 도미, 일깡, B.Park```'
 					)
 			await ctx.send(embed=embed, tts=False)
 		else:
@@ -1842,47 +1842,48 @@ class mainCog(commands.Cog):
 		if ctx.message.channel.id == basicSetting[7]:
 			msg = ctx.message.content[len(ctx.invoked_with)+1:]
 			for i in range(bossNum):
-				tmp_msg = msg
-				if len(tmp_msg) > 3 :
-					if tmp_msg.find(':') != -1 :
-						chkpos = tmp_msg.find(':')
-						hours1 = tmp_msg[chkpos-2:chkpos]
-						minutes1 = tmp_msg[chkpos+1:chkpos+3]
-						now2 = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
-						tmp_now = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
-						tmp_now = tmp_now.replace(hour=int(hours1), minute=int(minutes1))
+				if bossTimeString[i] == '99:99:99':
+					tmp_msg = msg
+					if len(tmp_msg) > 3 :
+						if tmp_msg.find(':') != -1 :
+							chkpos = tmp_msg.find(':')
+							hours1 = tmp_msg[chkpos-2:chkpos]
+							minutes1 = tmp_msg[chkpos+1:chkpos+3]
+							now2 = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
+							tmp_now = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
+							tmp_now = tmp_now.replace(hour=int(hours1), minute=int(minutes1))
+						else:
+							chkpos = len(tmp_msg)-2
+							hours1 = tmp_msg[chkpos-2:chkpos]
+							minutes1 = tmp_msg[chkpos:chkpos+2]
+							now2 = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
+							tmp_now = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
+							tmp_now = tmp_now.replace(hour=int(hours1), minute=int(minutes1))
 					else:
-						chkpos = len(tmp_msg)-2
-						hours1 = tmp_msg[chkpos-2:chkpos]
-						minutes1 = tmp_msg[chkpos:chkpos+2]
 						now2 = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
-						tmp_now = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
-						tmp_now = tmp_now.replace(hour=int(hours1), minute=int(minutes1))
-				else:
-					now2 = datetime.datetime.now() + datetime.timedelta(hours = int(basicSetting[0]))
-					tmp_now = now2
-					
-				bossFlag[i] = False
-				bossFlag0[i] = False
-				bossMungFlag[i] = False
-				bossMungCnt[i] = 1
+						tmp_now = now2
+						
+					bossFlag[i] = False
+					bossFlag0[i] = False
+					bossMungFlag[i] = False
+					bossMungCnt[i] = 1
 
-				if tmp_now > now2 :
-					tmp_now = tmp_now + datetime.timedelta(days=int(-1))
-					
-				if tmp_now < now2 : 
-					deltaTime = datetime.timedelta(hours = int(bossData[i][1]), minutes = int(bossData[i][5]))
-					while now2 > tmp_now :
-						tmp_now = tmp_now + deltaTime
-						bossMungCnt[i] = bossMungCnt[i] + 1
-					now2 = tmp_now
-					bossMungCnt[i] = bossMungCnt[i] - 1
-				else :
-					now2 = now2 + datetime.timedelta(hours = int(bossData[i][1]), minutes = int(bossData[i][5]))
-							
-				tmp_bossTime[i] = bossTime[i] = nextTime = now2
-				tmp_bossTimeString[i] = bossTimeString[i] = nextTime.strftime('%H:%M:%S')
-				tmp_bossDateString[i] = bossDateString[i] = nextTime.strftime('%Y-%m-%d')
+					if tmp_now > now2 :
+						tmp_now = tmp_now + datetime.timedelta(days=int(-1))
+						
+					if tmp_now < now2 : 
+						deltaTime = datetime.timedelta(hours = int(bossData[i][1]), minutes = int(bossData[i][5]))
+						while now2 > tmp_now :
+							tmp_now = tmp_now + deltaTime
+							bossMungCnt[i] = bossMungCnt[i] + 1
+						now2 = tmp_now
+						bossMungCnt[i] = bossMungCnt[i] - 1
+					else :
+						now2 = now2 + datetime.timedelta(hours = int(bossData[i][1]), minutes = int(bossData[i][5]))
+								
+					tmp_bossTime[i] = bossTime[i] = nextTime = now2
+					tmp_bossTimeString[i] = bossTimeString[i] = nextTime.strftime('%H:%M:%S')
+					tmp_bossDateString[i] = bossDateString[i] = nextTime.strftime('%Y-%m-%d')
 
 			await dbSave()
 			await dbLoad()
@@ -1918,7 +1919,7 @@ class mainCog(commands.Cog):
 		if ctx.message.channel.id == basicSetting[7]:
 			msg = ctx.message.content[len(ctx.invoked_with)+1:]
 			for i in range(bossNum):
-				if bossData[i][2] == "1":
+				if bossData[i][2] == "1" and bossTimeString[i] == '99:99:99':
 					tmp_msg = msg
 					if len(tmp_msg) > 3 :
 						if tmp_msg.find(':') != -1 :
